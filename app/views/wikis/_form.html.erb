@@ -1,0 +1,11 @@
+<%= form_for [current_user, wiki] do |f| %>
+  <div class='form_group'>
+    <%= f.label :title %>
+    <%= f.text_field :title, class: 'form_control', placeholder: 'Enter wiki name' %>
+  </div>
+  <div class='form_group'>
+    <%= f.label :body %>
+    <%= f.text_area :body, class: 'form_control', placeholder: 'Enter wiki body' %>
+  </div>
+  <%= f.submit "Save", class: 'btn btn-success' %>
+<% end %>
