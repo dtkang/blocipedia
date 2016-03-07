@@ -5,8 +5,27 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-user1 = User.create(:email => 'admin@example.com', :password => 'helloworld', :password_confirmation => 'helloworld', :confirmed_at => Time.now)
-user1.save!
-user1.wikis.create(:title => 'Wiki 1', :body => 'wiki one stuff')
-user1.wikis.create(:title => 'Wiki 2', :body => 'wiki two stuff')
-p 'One user created'
+
+p admin_user = User.create(:email => 'admin@example.com', :password => 'helloworld', :password_confirmation => 'helloworld', :confirmed_at => Time.now, :role => 'admin')
+p admin_user.role = 'admin'
+p admin_user.save
+p admin_user
+admin_user.wikis.create(:title => 'Admin Private Wiki 1', :body => 'wiki one stuff', :private => true)
+admin_user.wikis.create(:title => 'Admin Public Wiki 1', :body => 'wiki two stuff', :private => false)
+
+p standard_user = User.create(:email => 'standard@example.com', :password => 'helloworld', :password_confirmation => 'helloworld', :confirmed_at => Time.now, :role => 'standard')
+p standard_user.role = 'standard'
+p standard_user.save
+p standard_user
+standard_user.wikis.create(:title => 'Standard Public Wiki 1', :body => 'wiki one stuff', :private => false)
+standard_user.wikis.create(:title => 'Standard Public Wiki 2', :body => 'wiki two stuff', :private => false)
+
+p premium_user = User.create(:email => 'premium@example.com', :password => 'helloworld', :password_confirmation => 'helloworld', :confirmed_at => Time.now, :role => 'premium')
+p premium_user.role = 'premium'
+p premium_user.save
+p premium_user
+premium_user.wikis.create(:title => 'Premium Private Wiki 1', :body => 'wiki one stuff', :private => true)
+premium_user.wikis.create(:title => 'Premium Public Wiki 1', :body => 'wiki two stuff', :private => false)
+
+
+p 'Three users created'

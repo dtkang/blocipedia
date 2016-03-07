@@ -43,3 +43,5 @@ gem 'devise'
 
 gem 'faker', '~> 1.6', '>= 1.6.1'
 
+gem 'pundit'
+
