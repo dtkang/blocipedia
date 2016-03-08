@@ -5,7 +5,7 @@ class WikisController < ApplicationController
   end
   
   def index
-    #policy_scope(Wiki)
+    @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
   end
   
   def new
@@ -27,7 +27,8 @@ class WikisController < ApplicationController
   end
   
   def destroy
-    @wiki = current_user.wikis.find(params[:id])
+    @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
+    @wiki = @wikis.find(params[:id])
     authorize @wiki
     
     if @wiki.destroy
@@ -40,9 +41,11 @@ class WikisController < ApplicationController
   end
   
   def update
+    @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
     @wiki = current_user.wikis.find(params[:id])
-    @wiki.assign_attributes(wiki_params)
     authorize @wiki
+    
+    @wiki.assign_attributes(wiki_params)
     
     if @wiki.update(wiki_params)
       flash[:notice] = "Wiki has been updated"
@@ -54,8 +57,9 @@ class WikisController < ApplicationController
   end
 
   def edit
-    @wiki = current_user.wikis.find(params[:id])
-    authorize @wiki
+    @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
+    @wiki = @wikis.find(params[:id])
+    authorize @wiki 
   end
   
   private

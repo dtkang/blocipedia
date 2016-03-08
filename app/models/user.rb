@@ -1,19 +1,11 @@
 class User < ActiveRecord::Base
   has_many :wikis
-  attr_accessor :role
+  #attr_accessor :role
   
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
-
-  def create
-    super do |resource|
-      p "Here are the params: "
-      p params
-      @role = params(:role)
-    end
-  end
          
   def admin?
     p '*'*20
