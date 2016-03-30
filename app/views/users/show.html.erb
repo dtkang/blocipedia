@@ -1,1 +1,9 @@
+<%= button_to "Change Password", edit_user_registration_path, { method: :get } %>
+<br>
+<% if current_user.standard? %>
+  <%= button_to 'Upgrade To Premium', new_charge_path, { method: :get } %>
+<% elsif current_user.premium? %>
+  <%= button_to 'Downgrade To Freemium', edit_charge_path(current_user.id), { method: :get } %>
+<% end %>
+<br>
 <%= render partial: 'wikis/wikis', locals: {wikis: current_user.wikis, page_title: "My Wikis"} %>

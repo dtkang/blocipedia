@@ -1,25 +1,22 @@
 class WikisController < ApplicationController
   def show
-    @wiki = current_user.wikis.find(params[:id])
-    authorize @wiki
+    @wiki = Wiki.find(params[:id])
   end
   
   def index
-    @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
+    @wikis = Wiki.all
   end
   
   def new
     @wiki = Wiki.new
-    authorize @wiki
   end
   
   def create
     @wiki = current_user.wikis.build(wiki_params)
-    authorize @wiki
     
     if @wiki.save
       flash[:notice] = "Wiki has been created"
-      redirect_to [current_user, @wiki]
+      redirect_to [@wiki]
     else
       flash[:error] = "Error occurred creating wiki, please try again"
       render :new
@@ -28,6 +25,9 @@ class WikisController < ApplicationController
   
   def destroy
     @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
+    p "*"*20
+    p params[:id]
+    p "*"*20
     @wiki = @wikis.find(params[:id])
     authorize @wiki
     
@@ -42,14 +42,17 @@ class WikisController < ApplicationController
   
   def update
     @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
-    @wiki = current_user.wikis.find(params[:id])
+    p "*"*20
+    p params[:id]
+    p "*"*20    
+    @wiki = Wiki.find(params[:id])
     authorize @wiki
     
     @wiki.assign_attributes(wiki_params)
     
     if @wiki.update(wiki_params)
       flash[:notice] = "Wiki has been updated"
-      redirect_to [current_user, @wiki]
+      redirect_to [@wiki]
     else
       flash[:error] = "Error occurred updating wiki, please try again"
       render :edit
@@ -58,6 +61,12 @@ class WikisController < ApplicationController
 
   def edit
     @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
+    p "*"*20
+    p @wikis
+    p params[:id]
+    p @wikis.find(params[:id])
+    p @wikis.exist?(params[:id])
+    p "*"*20
     @wiki = @wikis.find(params[:id])
     authorize @wiki 
   end

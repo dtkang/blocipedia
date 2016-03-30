@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
   has_many :wikis
-  #attr_accessor :role
   
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable and :omniauthable
@@ -8,23 +7,14 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
          
   def admin?
-    p '*'*20
-    p role
-    p '*'*20
-    p role == "admin"
+    role == "admin"
   end
   
   def premium?
-    p '*'*20
-    p role
-    p '*'*20
-    p role == "premium"
+    role == "premium"
   end
   
   def standard?
-    p '*'*20
-    p role
-    p '*'*20
-    p role == "standard"
+    role == "standard"
   end
 end
