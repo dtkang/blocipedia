@@ -1,22 +1,22 @@
 class ChargesController < ApplicationController
 
   def create
+    customer = Stripe::Customer.create(
+        email: current_user.email,
+        card: params[:stripeToken]
+        )
+
+    charge = Stripe::Charge.create(
+        customer: customer.id,
+        amount: 1500,
+        description: "Blocipedia Membership - #{current_user.email}",
+        currency: 'usd'
+        )
+      
+    flash[:notice] = "Thank you for your payment, #{current_user.email}!"
+
     current_user.role = "premium"
     if current_user.save!
-      customer = Stripe::Customer.create(
-          email: current_user.email,
-          card: params[:stripeToken]
-          )
-
-      charge = Stripe::Charge.create(
-          customer: customer.id,
-          amount: 1500,
-          description: "Blocipedia Membership - #{current_user.email}",
-          currency: 'usd'
-          )
-      
-      flash[:notice] = "Thank you for your payment, #{current_user.email}!"
-    
       redirect_to user_path(current_user)
     else
       flash.now[:alert] = "Error occurred during upgrade, please try again."
@@ -39,6 +39,13 @@ class ChargesController < ApplicationController
   def edit
     current_user.role = "standard"
     
+    private_wikis = Wiki.where({private: true, user_id: current_user.id})
+
+    private_wikis.each do |wiki|
+      wiki.private = false
+      wiki.save!
+    end
+   
     if current_user.save!
       flash[:notice] = "Downgrade complete!"
     else

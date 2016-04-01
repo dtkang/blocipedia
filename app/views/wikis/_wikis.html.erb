@@ -9,4 +9,6 @@
     <% end %>
   </div>
 </div>
-<%= link_to "New Wiki", new_wiki_path, class: 'btn btn-success' %>
+<% if current_user != nil %>
+  <%= link_to "New Wiki", new_wiki_path, class: 'btn btn-success' %>
+<% end %>

@@ -4,7 +4,7 @@ class WikisController < ApplicationController
   end
   
   def index
-    @wikis = Wiki.all
+    @wikis = policy_scope(Wiki)
   end
   
   def new
@@ -24,11 +24,7 @@ class WikisController < ApplicationController
   end
   
   def destroy
-    @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
-    p "*"*20
-    p params[:id]
-    p "*"*20
-    @wiki = @wikis.find(params[:id])
+    @wiki = Wiki.find(params[:id])
     authorize @wiki
     
     if @wiki.destroy
@@ -41,10 +37,6 @@ class WikisController < ApplicationController
   end
   
   def update
-    @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
-    p "*"*20
-    p params[:id]
-    p "*"*20    
     @wiki = Wiki.find(params[:id])
     authorize @wiki
     
@@ -60,14 +52,7 @@ class WikisController < ApplicationController
   end
 
   def edit
-    @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
-    p "*"*20
-    p @wikis
-    p params[:id]
-    p @wikis.find(params[:id])
-    p @wikis.exist?(params[:id])
-    p "*"*20
-    @wiki = @wikis.find(params[:id])
+    @wiki = Wiki.find(params[:id])
     authorize @wiki 
   end
   
