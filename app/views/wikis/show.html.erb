@@ -1,2 +1,2 @@
 <h1 align="center"><%= @wiki.title %></h1>
-<h4 align="center"><%= @wiki.body %></h4>
+<h4><%= markdown(@wiki.body) %></h4>
