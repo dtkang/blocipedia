@@ -1,12 +1,14 @@
-<div class="panel panel-default">
-  <div class="panel-heading"><%= page_title %></div>
-  <div class="panel-body">
-    <div class="row">
-        <div class="col-md-6">Title</div>
+<div class="panel-spacing">
+  <div class="panel panel-default">
+    <div class="panel-heading"><%= page_title %></div>
+    <div class="panel-body">
+      <div class="row">
+          <div class="col-md-6">Title</div>
+      </div>
+      <% wikis.each do |wiki| %>
+        <%= render partial: 'wikis/wiki', locals: {wiki: wiki} %>
+      <% end %>
     </div>
-    <% wikis.each do |wiki| %>
-      <%= render partial: 'wikis/wiki', locals: {wiki: wiki} %>
-    <% end %>
   </div>
 </div>
 <% if current_user != nil %>

@@ -26,7 +26,7 @@ class WikiPolicy < ApplicationPolicy
   end
   
   def update?
-    user.admin? || record.user == user
+    user.admin? || record.users.exists?(user.id) || record.collaborators.exists?(user_id: user.id)
   end
   
   def destroy?

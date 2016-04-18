@@ -13,8 +13,10 @@ class WikisController < ApplicationController
   
   def create
     @wiki = current_user.wikis.build(wiki_params)
+    @wiki.user_id = current_user.id
     
     if @wiki.save
+      @wiki.collaborators.create(:user_id => current_user.id, :wiki_id => @wiki.id)
       flash[:notice] = "Wiki has been created"
       redirect_to [@wiki]
     else
@@ -56,9 +58,28 @@ class WikisController < ApplicationController
     authorize @wiki 
   end
   
+  def bulk_collaborators_update
+    @wiki = Wiki.find(params[:wiki_id])
+    
+    if params[:email_addresses] != ""
+      @user_email_addresses = params[:email_addresses].split(/,\s*/)
+      @user_email_addresses.each do |user|
+        if User.exists?(email: user)
+          @new_user = User.where(email: user)
+          if !@wiki.collaborators.exists?(user_id: @new_user)
+            @wiki.collaborators.create(user_id: @new_user.ids[0], wiki_id: @wiki.id)
+          end
+        else
+          flash[:error] = "User does not exist!"
+        end
+      end
+    end
+    redirect_to wiki_path(@wiki.id)
+  end
+  
   private
   
   def wiki_params
-    params.require(:wiki).permit(:title,:body,:private)
+    params.require(:wiki).permit(:title,:body,:private,:user_id)
   end
 end

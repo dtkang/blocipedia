@@ -14,4 +14,25 @@
  *= require_self
  */
 @import "bootstrap-sprockets";
-@import "bootstrap"; 
+@import "bootstrap";
+.acct-maintenance-spacing {
+    padding-top:10px;
+    padding-bottom:10px;    
+}
+
+.panel-spacing {
+    padding-top:20px;
+    padding-bottom:20px;
+}
+
+.panel-body > .row:nth-of-type(even) {
+    background: #e0e0e0;
+}
+
+.panel-heading {
+    font-size:21px;
+    font-weight:bold;
+    text-align:center;
+    padding-top:7px;
+    padding-bottom:7px;
+}

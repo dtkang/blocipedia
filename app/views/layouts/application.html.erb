@@ -9,14 +9,18 @@
 </head>
 <body>
 <div class="container">
-  <% if user_signed_in? %>
-    Signed in as: <strong><%= current_user.email %></strong>
-    <%= link_to 'User Profile', user_path(current_user.id), :class => 'navbar-link' %> - <%= link_to "Sign Out", destroy_user_session_path, method: :delete, :class => 'navbar-link' %> - 
-    <%= link_to 'All Wikis', wikis_path, :class => 'navbar-link' %>
-  <% else %>
-    <%= link_to 'Sign In', new_user_session_path, :class => 'navbar-link' %> -
-    <%= link_to 'All Wikis', wikis_path, :class => 'navbar-link' %>
-  <% end %>
+  <ul class="nav nav-tabs">
+    <li><%= link_to "Blocipedia", root_path %></li>
+    <li><%= link_to "Wikis", wikis_path %></li>
+    <div class="pull-right">
+      <% if user_signed_in? %>
+        Signed in as: <strong><%= current_user.email %></strong>
+        <%= link_to 'User Profile', user_path(current_user.id), :class => 'navbar-link' %> - <%= link_to "Sign Out", destroy_user_session_path, method: :delete, :class => 'navbar-link' %>
+      <% else %>
+        <%= link_to 'Sign In', new_user_session_path, :class => 'navbar-link' %>
+      <% end %>
+    </div>
+  </ul>
   <div class="flash">
     <% if flash[:notice] %>
       <div class="alert alert-success">

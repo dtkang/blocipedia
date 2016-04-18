@@ -1,9 +1,19 @@
-<%= button_to "Change Password", edit_user_registration_path, { method: :get } %>
-<br>
-<% if current_user.standard? %>
-  <%= link_to 'Upgrade To Premium', new_charge_path, { method: :get } %>
-<% elsif current_user.premium? %>
-  <%= link_to 'Downgrade To Freemium', edit_charge_path(current_user.id), data: { confirm: "Are you sure?" } %>
-<% end %>
-<br>
-<%= render partial: 'wikis/wikis', locals: {wikis: current_user.wikis, page_title: "My Wikis"} %>
+<div class="acct-maintenance-spacing">
+  <h3>Account Maintenance</h3>
+  <div class="row">
+    <div class="col-md-3">
+      <%= link_to "Change Password", edit_user_registration_path, { method: :get } %>
+    </div>
+    <div class="col-md-3">
+      <% if current_user.standard? %>
+        <%= link_to 'Upgrade To Premium', new_charge_path, { method: :get } %>
+      <% elsif current_user.premium? %>
+        <%= link_to 'Downgrade To Freemium', edit_charge_path(current_user.id), data: { confirm: "Are you sure?" } %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <%= render partial: 'wikis/wikis', locals: {wikis: current_user.wikis, page_title: "My Wikis"} %>
+</div>

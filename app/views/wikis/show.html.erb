@@ -1,2 +1,32 @@
-<h1 align="center"><%= @wiki.title %></h1>
+<h1><%= @wiki.title %></h1>
 <h4><%= markdown(@wiki.body) %></h4>
+
+<% if current_user != nil and current_user.id == @wiki.user_id %>
+  <%= form_tag bulk_collaborators_update_wikis_path, method: :post do %>
+    <div class="panel panel-default">
+      <div class="panel-heading">Wiki Collaborators</div>
+      <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">User Email</div>
+            <div class="col-md-6">Collaborator Access</div>
+        </div>
+        <% @wiki.collaborators.each do |collaborator| %>
+          <% if collaborator.user_id != @wiki.user_id %>
+            <div class="col-md-6">
+              <%= collaborator.user.email if collaborator.user %>
+            </div>
+            <div class="col-md-6">
+              <%= link_to "remove", wiki_collaborator_path(@wiki,collaborator), method: :delete %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <br>
+    <h4>Enter comma seperate email addresses of new collaborators</h4>
+    <%= text_field_tag "email_addresses" %>
+    <%= hidden_field_tag "wiki_id", @wiki.id %>
+    <br><br>
+    <%= submit_tag "Update Collaborators" %>
+  <% end %>
+<% end %>
